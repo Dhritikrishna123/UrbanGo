@@ -9,8 +9,8 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/app/app      # Mount local code for hot-reload during development
-      - ./model:/app/model  # Mount model folder
+      - ./app:/app/app
+      - ./model:/app/model  
     environment:
       - ENV=development
     command: >

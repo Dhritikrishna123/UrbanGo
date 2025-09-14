@@ -13,12 +13,14 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# Copy application code (without model logic for now)
 COPY app/ ./app
-COPY model/ ./model
+
+# Ensure model folder exists
+RUN mkdir -p /app/model
 
 # Expose API port
 EXPOSE 8000
 
-# Default command (can be overridden in compose for dev)
+# Default command for production (can be overridden for dev)
 CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "-w", "4", "app.main:app", "--bind", "0.0.0.0:8000"]
