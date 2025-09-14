@@ -15,7 +15,7 @@
   - [ ] Design endpoint schemas (`/predict_eta`, `/health`)
   - [ ] Define request/response models
   - [ ] Document error handling
-  - 📁 *Reference: `docs/ai/eta/openapi.yaml`*
+  - 📁 Reference: [docs/ai/eta/openapi.yaml](docs/ai/eta/openapi.yaml)
 
 - [ ] **Data Collection & Preparation**
   - [ ] Collect baseline GPS data
