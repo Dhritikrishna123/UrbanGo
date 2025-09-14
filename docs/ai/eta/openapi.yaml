@@ -1,0 +1,145 @@
+openapi: 3.1.0
+info:
+  title: UrbanGo ETA Microservice
+  version: "1.0.0"
+  description: API for predicting Estimated Time of Arrival (ETA) for buses in small cities.
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+
+paths:
+
+  /v1/predict_eta:
+    post:
+      summary: Predict ETA to a target stop
+      operationId: predictETA
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PredictETARequest'
+      responses:
+        '200':
+          description: Successful ETA prediction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictETAResponse'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+
+  /health:
+    get:
+      summary: Health check endpoint
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+
+components:
+  schemas:
+
+    PredictETARequest:
+      type: object
+      required:
+        - bus_id
+        - route_id
+        - current_stop_id
+        - target_stop_id
+        - timestamp
+        - current_location_lat
+        - current_location_lon
+        - average_speed_last_segment
+        - segment_distance
+      properties:
+        bus_id:
+          type: string
+          example: "BUS101"
+        route_id:
+          type: string
+          example: "ROUTE5"
+        current_stop_id:
+          type: string
+          example: "STOP12"
+        target_stop_id:
+          type: string
+          example: "STOP15"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-09-14T09:30:00+05:30"
+        current_location_lat:
+          type: number
+          format: float
+          example: 22.5726
+        current_location_lon:
+          type: number
+          format: float
+          example: 88.3639
+        average_speed_last_segment:
+          type: number
+          format: float
+          example: 25.5
+        segment_distance:
+          type: number
+          format: float
+          example: 1.2
+        weather_condition:
+          type: string
+          example: "sunny"
+        day_of_week:
+          type: integer
+          description: 0=Monday, 6=Sunday
+          example: 0
+        hour_of_day:
+          type: integer
+          description: 0-23
+          example: 9
+
+    PredictETAResponse:
+      type: object
+      required:
+        - bus_id
+        - target_stop_id
+        - predicted_eta_seconds
+        - timestamp
+      properties:
+        bus_id:
+          type: string
+          example: "BUS101"
+        target_stop_id:
+          type: string
+          example: "STOP15"
+        predicted_eta_seconds:
+          type: integer
+          example: 1260
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-09-14T09:30:05+05:30"
+        confidence_score:
+          type: number
+          format: float
+          example: 0.88
+        delay_indicator:
+          type: string
+          enum: ["on_time", "delayed"]
+          example: "on_time"
+        route_id:
+          type: string
+          example: "ROUTE5"
+        predicted_speed_segment:
+          type: number
+          format: float
+          example: 25.0
