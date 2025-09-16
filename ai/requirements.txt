@@ -9,3 +9,9 @@ prometheus-fastapi-instrumentator==6.0.0
 pandas
 numpy
 joblib
+osmnx>=1.9
+networkx>=3.0
+shapely>=2.0
+geopandas>=0.14
+pyproj>=3.6
+rtree>=1.2
